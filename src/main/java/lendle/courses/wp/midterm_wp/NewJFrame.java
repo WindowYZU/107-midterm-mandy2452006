@@ -53,6 +53,11 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "https://mbtskoudsalg.com/images/png-image-7.png", "http://pngimg.com/uploads/eagle/eagle_PNG1227.png", "https://upload.wikimedia.org/wikipedia/commons/4/4a/Photographer_Barnstar.png", "http://pluspng.com/img-png/bulb-hd-png-light-bulb-png-transparent-image-2048.png", " " }));
 
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
         jScrollPane1.setViewportView(jList1);
 
         jScrollPane2.setViewportView(jLabel2);
@@ -98,10 +103,12 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        
         try {
             jButton1.setEnabled(false);
             //從 combobox 抓出被選到的項目，存到變數裡
-            String selectedItem="";
+            //String selectedItem="";
+            String selectedItem=(String) jComboBox1.getSelectedItem();
             /////////////////////////////////////
             URL url = new URL(selectedItem);
             String fileName = url.getFile();
@@ -114,11 +121,26 @@ public class NewJFrame extends javax.swing.JFrame {
                 @Override
                 public void totalBytesDownloaded(long bytes, boolean finished, boolean failed) {
                     //implement this
+                    //int i;
+                    
                     if (finished) {
                         progress.setVisible(false);
                         jButton1.setEnabled(true);
                         //將下載好的項目加入到 jList 裡面
                         
+                        DefaultListModel model=new DefaultListModel();
+                        jList1.setModel(model);
+                        
+                        int count;
+                        
+                        if(true){
+                            count=-1;
+                            int temp=count+1;
+                            model.add(temp,selectedItem);
+                            
+                        }
+                       
+                        //model.add(i,selectedItem);
                         ////////////////////////////
                         SwingUtilities.invokeLater(new Runnable() {
                             @Override
@@ -126,6 +148,8 @@ public class NewJFrame extends javax.swing.JFrame {
                                 try {
                                     URL fileURL=tempFile.toURI().toURL();
                                     //利用 fileURL 將 image icon 加到 jLabel2
+                                    ImageIcon icon=new ImageIcon(fileURL);
+                                    jLabel2.setIcon(icon);
                                     ////////////////////////////////////////
                                     jList1.updateUI();
                                 } catch (Exception ex) {
@@ -142,11 +166,12 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
             });
             progress.setVisible(true);
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    
     /**
      * @param args the command line arguments
      */
